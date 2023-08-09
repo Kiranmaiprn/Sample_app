@@ -3,4 +3,9 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "articles#index"
+  scope 'royalkitchen' do 
+    resources :users, except: [:new, :edit, :create]
+  end
+  post 'royalkitchen/user/signup', to: 'users#signup'
+  post 'royalkitchen/user/login', to: 'users#login'
 end
