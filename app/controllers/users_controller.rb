@@ -2,6 +2,12 @@ class UsersController < ApplicationController
 
     skip_before_action :verify_authenticity_token
 
+
+    # Get - /royalkitchen/user/:id
+    def show 
+        render json: User.where(id: params[:id]).pluck(:username, :email)[0]
+    end
+
     # Post - /royalkitchen/user/signup
     def signup 
         @user = User.new(set_params)
@@ -27,6 +33,26 @@ class UsersController < ApplicationController
         else 
             render json: "The email you entered is not register with Royal Kitchen"
         end
+    end 
+
+
+    # Put - royalkitchen/users/:id
+    def update
+        if User.find_by(id: params[:id])
+            @user = User.find(params[:id])
+            if @user.update(set_params)
+                if params[:password_digest].present?
+                    @user.password = params[:password_digest]
+                    @user.save
+                end
+                render json: "Your details are updated successfully"
+            else
+                render json: @user.errors 
+            end
+        else 
+            render json: "The user is not register with Royal Kitchen"
+        end
+       
     end
 
 
