@@ -11,7 +11,7 @@ class UsersController < ApplicationController
     # Post - /royalkitchen/user/signup
     def signup 
         @user = User.new(set_params)
-        @user.password = params[:password_digest]
+        @user.password = params[:password]
         if @user.save 
             render json: "you have created Royal kitchen account successfully"
         else
@@ -41,8 +41,8 @@ class UsersController < ApplicationController
         if User.find_by(id: params[:id])
             @user = User.find(params[:id])
             if @user.update(set_params)
-                if params[:password_digest].present?
-                    @user.password = params[:password_digest]
+                if params[:password].present?
+                    @user.password = params[:password]
                     @user.save
                 end
                 render json: "Your details are updated successfully"
@@ -69,6 +69,6 @@ class UsersController < ApplicationController
     private 
 
     def set_params 
-        params.require(:user).permit(:username,:email,:password_digest)
+        params.require(:user).permit(:username,:email,:password)
     end
 end

@@ -15,7 +15,7 @@ class OrdersController < ApplicationController
             @order.items << @item 
         end
 
-        render json: @order.items
+        render json: @order.items.pluck("item_name")
     end
 
 
