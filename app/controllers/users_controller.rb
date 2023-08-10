@@ -8,10 +8,11 @@ class UsersController < ApplicationController
         render json: User.where(id: params[:id]).pluck(:username, :email)[0]
     end
 
+
     # Post - /royalkitchen/user/signup
     def signup 
         @user = User.new(set_params)
-        @user.password = params[:password]
+        @user.password = params[:password_digest]
         if @user.save 
             render json: "you have created Royal kitchen account successfully"
         else
@@ -39,10 +40,10 @@ class UsersController < ApplicationController
     # Put - royalkitchen/users/:id
     def update
         if User.find_by(id: params[:id])
-            @user = User.find(params[:id])
+            @user = User.find_by(id: params[:id])
             if @user.update(set_params)
-                if params[:password].present?
-                    @user.password = params[:password]
+                if params[:password_digest].present?
+                    @user.password = params[:password_digest]
                     @user.save
                 end
                 render json: "Your details are updated successfully"
@@ -56,19 +57,9 @@ class UsersController < ApplicationController
     end
 
 
-
-
-
-
-
-
-
-
-
-
     private 
 
     def set_params 
-        params.require(:user).permit(:username,:email,:password)
+        params.require(:user).permit(:username,:email,:password_digest)
     end
 end
