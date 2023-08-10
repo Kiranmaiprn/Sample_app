@@ -8,4 +8,6 @@ Rails.application.routes.draw do
   end
   post 'royalkitchen/user/signup', to: 'users#signup'
   post 'royalkitchen/user/login', to: 'users#login'
+  get 'royalkitchen/user/:id/orders', to: 'orders#show'
+  post 'royalkitchen/user/:id/orders', to: 'orders#create'
 end
